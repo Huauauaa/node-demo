@@ -59,4 +59,4 @@ const server = http.createServer((req, res) => {
 
 const PORT = process.env.PORT || 8000;
 
-server.listen(PORT, () => console.log(`server is running on ${PORT}`));
+server.listen(PORT, () => console.log(`server is running on http://localhost:${PORT}`));
