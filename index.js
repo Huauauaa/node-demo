@@ -1,8 +1,12 @@
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const users = require('./public/data/users.json');
 
 const server = http.createServer((req, res) => {
+  if (req.url === '/api/users') {
+    res.end(JSON.stringify(users));
+  }
   let filePath = path.join(
     __dirname,
     'public',
@@ -22,6 +26,7 @@ const server = http.createServer((req, res) => {
       contentType = 'application/json';
       break;
     case '.png':
+    case '.jpeg':
       contentType = 'image/png';
       break;
     case '.jpg':
@@ -31,18 +36,18 @@ const server = http.createServer((req, res) => {
       contentType = 'text/html';
   }
 
-  if (contentType == "text/html" && extname == "") filePath += ".html";
+  if (contentType == 'text/html' && extname == '') filePath += '.html';
 
   fs.readFile(filePath, (err, content) => {
     if (err) {
-      if (err.code == "ENOENT") {
+      if (err.code == 'ENOENT') {
         // Page not found
         fs.readFile(
-          path.join(__dirname, "public", "404.html"),
+          path.join(__dirname, 'public', '404.html'),
           (err, content) => {
-            res.writeHead(404, { "Content-Type": "text/html" });
-            res.end(content, "utf8");
-          }
+            res.writeHead(404, { 'Content-Type': 'text/html' });
+            res.end(content, 'utf8');
+          },
         );
       } else {
         //  Some server error
@@ -51,12 +56,14 @@ const server = http.createServer((req, res) => {
       }
     } else {
       // Success
-      res.writeHead(200, { "Content-Type": contentType });
-      res.end(content, "utf8");
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(content, 'utf8');
     }
   });
 });
 
 const PORT = process.env.PORT || 8000;
 
-server.listen(PORT, () => console.log(`server is running on http://localhost:${PORT}`));
+server.listen(PORT, () =>
+  console.log(`server is running on http://localhost:${PORT}`),
+);
