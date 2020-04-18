@@ -5,6 +5,7 @@ const users = require('./public/data/users.json');
 
 const server = http.createServer((req, res) => {
   if (req.url === '/api/users') {
+    // res.setHeader('Content-Type', 'application/binary-json');
     res.end(JSON.stringify(users));
   }
   let filePath = path.join(

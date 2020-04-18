@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js || npm run css",
+    "serve": "nodemon server.js",
     "css": "sass --watch ./public/css/global.scss ./public/css/global.css"
   },
   "keywords": [],
