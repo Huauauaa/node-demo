@@ -9,6 +9,10 @@ const cheerio = require('cheerio');
 const PORT = process.env.PORT || 8000;
 
 app.get('/', (req, res) => res.send('harvey api'));
+app.get('/page', (req, res) => res.sendFile(`${__dirname}/index.html`));
+app.get('/name-maker', (req, res) =>
+  res.sendFile(`${__dirname}/build/index.html`),
+);
 app.get('/api/users', async (req, res) => {
   const users = await User.find();
   res.end(JSON.stringify(users));
