@@ -76,19 +76,12 @@ const getResults = (res) => {
   return results;
 };
 let doms = [];
-app.get('/api/word', function (req, res) {
+app.get('/api/word', async function (req, res) {
   const word = req.query.wd || '';
   const url = encodeURI(`https://hanyu.baidu.com/zici/s?wd=${word}`);
 
-  superagent.get(url).end((err, res) => {
-    if (err) {
-      console.log(`获取百度字词失败 - ${err}`);
-    } else {
-      doms = getResults(res);
-    }
-  });
-  console.log(doms);
-  res.send(doms);
+  const response = await superagent.get(url);
+  res.send(getResults(response));
 });
 
 app.listen(PORT, () => {
