@@ -90,6 +90,15 @@ app.get('/api/word', function (req, res) {
   console.log(doms);
   res.send(doms);
 });
+let result = {};
+app.get('/api/bilibili', function (req, res) {
+  const url = encodeURI(`https://${req.query.url}`);
+
+  superagent.get(url).end((err, r) => {
+    result = r.body;
+  });
+  res.send(result);
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
