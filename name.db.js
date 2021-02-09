@@ -5,6 +5,10 @@ mongoose.connect(process.env.MONGO_URI || MONGO_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
-const Name = mongoose.model('Name', { name: String, id: Number, pinyin: String });
+const Name = mongoose.model('Name', {
+  name: String,
+  id: Number,
+  pinyin: String,
+});
 
 module.exports = Name;
