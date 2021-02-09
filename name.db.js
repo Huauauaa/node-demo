@@ -8,7 +8,7 @@ mongoose.connect(process.env.MONGO_URI || MONGO_URI, {
 const Name = mongoose.model('Name', {
   name: String,
   id: Number,
-  pinyin: String,
+  pinyin: [String],
 });
 
 module.exports = Name;
