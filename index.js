@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const User = require('./user.db');
 const Product = require('./product.db');
+const Name = require('./name.db');
 
 const superagent = require('superagent');
 const cheerio = require('cheerio');
@@ -34,6 +35,46 @@ app.post('/api/product', async (req, res) => {
   p.save(function () {
     res.end('success');
   });
+});
+
+app.get('/api/name', async (req, res) => {
+  const items = await Name.find();
+  res.end(JSON.stringify(items));
+});
+
+app.use(express.json());
+app.post('/api/name', async (req, res) => {
+  const { name, pinyin } = req.body;
+  const p = new Name({ name, pinyin });
+  p.save(function () {
+    res.end('success');
+  });
+});
+
+app.post('/api/names', async (req, res) => {
+  const names = req.body;
+  Name.insertMany(names, function (err) {
+    res.end(`success: ${names.length}`);
+  });
+});
+
+app.delete('/api/name', async (req, res) => {
+  const { _id } = req.query;
+  await Name.deleteOne({ _id });
+  res.end('success');
+});
+
+app.put('/api/name', async (req, res) => {
+  const { _id, name, pinyin } = req.body;
+  const payload = {};
+  if (name) {
+    payload.name = name;
+  }
+  if (pinyin) {
+    payload.pinyin = pinyin;
+  }
+  await Name.updateOne({ _id }, payload);
+  res.end('success');
 });
 
 const getResults = (res) => {
