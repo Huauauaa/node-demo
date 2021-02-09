@@ -3,6 +3,9 @@ const app = express();
 const User = require('./user.db');
 const Product = require('./product.db');
 const Name = require('./name.db');
+const cors = require('cors');
+
+app.use(cors());
 
 const superagent = require('superagent');
 const cheerio = require('cheerio');
