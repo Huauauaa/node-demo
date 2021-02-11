@@ -43,7 +43,12 @@ app.post('/api/product', async (req, res) => {
 app.get('/api/name', async (req, res) => {
   const { page = 1, size = 10 } = req.query;
   const items = await Name.find().sort({ _id: 'desc' });
-  res.end(JSON.stringify(items.slice((page - 1) * size, size * page)));
+  res.send({
+    items: items.slice((page - 1) * size, size * page),
+    page: Number(page),
+    size: Number(size),
+    total: items.length,
+  });
 });
 
 app.use(express.json());
