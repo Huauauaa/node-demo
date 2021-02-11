@@ -48,10 +48,15 @@ app.get('/api/name', async (req, res) => {
 app.use(express.json());
 app.post('/api/name', async (req, res) => {
   const { name, pinyin } = req.body;
-  const p = new Name({ name, pinyin });
-  p.save(function () {
-    res.end('success');
-  });
+  const names = await Name.find({ name }).exec();
+  if (names.length !== 0) {
+    res.status(400).send({ error: `${name} exists.` });
+  } else {
+    const p = new Name({ name, pinyin });
+    p.save(function () {
+      res.end('success');
+    });
+  }
 });
 
 app.post('/api/names', async (req, res) => {
