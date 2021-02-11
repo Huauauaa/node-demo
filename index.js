@@ -41,10 +41,12 @@ app.post('/api/product', async (req, res) => {
 });
 
 app.get('/api/name', async (req, res) => {
-  const { page = 1, size = 10 } = req.query;
+  const { page = 1, size = 10, keyword } = req.query;
   const items = await Name.find().sort({ _id: 'desc' });
   res.send({
-    items: items.slice((page - 1) * size, size * page),
+    items: items
+      .filter((item) => item.name.includes(keyword))
+      .slice((page - 1) * size, size * page),
     page: Number(page),
     size: Number(size),
     total: items.length,
