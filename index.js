@@ -4,6 +4,7 @@ const User = require('./user.db');
 const Product = require('./product.db');
 const Name = require('./name.db');
 const cors = require('cors');
+const _ = require('lodash');
 
 app.use(cors());
 
@@ -45,7 +46,9 @@ app.get('/api/name', async (req, res) => {
   const items = await Name.find().sort({ _id: 'desc' });
   res.send({
     items: items
-      .filter((item) => item.name.includes(keyword))
+      .filter(
+        (item) => _.intersection(item.pinyin, keyword.split(',')).length !== 0,
+      )
       .slice((page - 1) * size, size * page),
     page: Number(page),
     size: Number(size),
