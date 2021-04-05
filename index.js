@@ -57,6 +57,19 @@ app.get('/api/name', async (req, res) => {
   });
 });
 
+app.get('/api/yins', async (req, res) => {
+  const names = await Name.find().sort({ _id: 'desc' });
+  const result = names.reduce((r, c) => {
+    r.push(...c.pinyin);
+    return r;
+  }, []);
+  const formattedResult = _.uniq(result.sort());
+  res.send({
+    items: _.uniq(result.sort()),
+    total: formattedResult.length,
+  });
+});
+
 app.use(express.json());
 app.post('/api/name', async (req, res) => {
   const { name, pinyin } = req.body;
