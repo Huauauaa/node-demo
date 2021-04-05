@@ -45,9 +45,7 @@ app.get('/api/name', async (req, res) => {
   const { page = 1, size = 10, keyword } = req.query;
   const items = await Name.find().sort({ _id: 'desc' });
   const filteredItems = items.filter((item) =>
-    _.isNil(keyword)
-      ? true
-      : item.pinyin.some((item) => item.includes(keyword)),
+    _.isNil(keyword) ? true : item.pinyin.some((item) => item === keyword),
   );
   res.send({
     items: filteredItems.slice((page - 1) * size, size * page),
