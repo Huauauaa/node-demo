@@ -47,7 +47,7 @@ app.get('/api/name', async (req, res) => {
   const filteredItems = items.filter((item) =>
     _.isNil(keyword)
       ? true
-      : _.intersection(item.pinyin, keyword.split(',')).length !== 0,
+      : item.pinyin.some((item) => item.includes(keyword)),
   );
   res.send({
     items: filteredItems.slice((page - 1) * size, size * page),
