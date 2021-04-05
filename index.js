@@ -44,17 +44,16 @@ app.post('/api/product', async (req, res) => {
 app.get('/api/name', async (req, res) => {
   const { page = 1, size = 10, keyword } = req.query;
   const items = await Name.find().sort({ _id: 'desc' });
+  const filteredItems = items.filter((item) =>
+    _.isNil(keyword)
+      ? true
+      : _.intersection(item.pinyin, keyword.split(',')).length !== 0,
+  );
   res.send({
-    items: items
-      .filter((item) =>
-        _.isNil(keyword)
-          ? true
-          : _.intersection(item.pinyin, keyword.split(',')).length !== 0,
-      )
-      .slice((page - 1) * size, size * page),
+    items: filteredItems.slice((page - 1) * size, size * page),
     page: Number(page),
     size: Number(size),
-    total: items.length,
+    total: filteredItems.length,
   });
 });
 
