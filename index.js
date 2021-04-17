@@ -7,6 +7,10 @@ const cors = require('cors');
 const _ = require('lodash');
 
 app.use(cors());
+app.use((request, response, next) => {
+  console.log('welcome to node demo');
+  next();
+});
 
 const superagent = require('superagent');
 const cheerio = require('cheerio');
