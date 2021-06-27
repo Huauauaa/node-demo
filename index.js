@@ -5,6 +5,7 @@ const Product = require('./product.db');
 const Name = require('./name.db');
 const cors = require('cors');
 const _ = require('lodash');
+const fs = require('fs');
 
 app.use(cors());
 app.use((request, response, next) => {
@@ -75,6 +76,35 @@ app.get('/api/yins', async (req, res) => {
 });
 
 app.use(express.json());
+
+app.get(`/api/logo`, (req, res) => {
+  res.setHeader('Content-Type', 'image/png');
+  const content = fs.readFileSync('./hua.png', 'binary');
+  res.writeHead(200, 'ok');
+  res.write(content, 'binary');
+  res.end();
+});
+const svgStr = `<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" stroke="red" fill="transparent">
+  <rect x="0" width="10" height="10" rx="1" fill="gray"/>
+  <rect x="10" width="10" height="10" rx="1" />
+  <rect x="20" width="10" height="10" rx="1" />
+  <rect x="30" width="10" height="10" rx="1" />
+
+  <rect x="0" y="10" width="10" height="10" rx="2" />
+  <rect x="10" y="10" width="10" height="10" rx="2" />
+  <rect x="20" y="10" width="10" height="10" rx="2" />
+  <rect x="30" y="10" width="10" height="10" rx="2" />
+</svg>`;
+
+app.get(`/api/svg`, (req, res) => {
+  const birth = req.query.birth;
+  console.log({ birth });
+  res.setHeader('Content-Type', 'image/svg+xml');
+  res.writeHead(200, 'ok');
+  res.write(svgStr, 'binary');
+  res.end();
+});
+
 app.post('/api/name', async (req, res) => {
   const { name, pinyin } = req.body;
   const names = await Name.find({ name }).exec();
