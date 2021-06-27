@@ -42,7 +42,7 @@ class Life {
       index += 1;
     }
 
-    const end = `<text x="0" y="110" fill="black" stroke="black">Remaining Life</text></svg>`;
+    const end = `</svg>`;
 
     return `${start}${content}${end}`;
   }
