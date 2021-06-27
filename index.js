@@ -6,6 +6,7 @@ const Name = require('./name.db');
 const cors = require('cors');
 const _ = require('lodash');
 const fs = require('fs');
+const Life = require('./Life');
 
 app.use(cors());
 app.use((request, response, next) => {
@@ -98,10 +99,10 @@ const svgStr = `<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" st
 
 app.get(`/api/svg`, (req, res) => {
   const birth = req.query.birth;
-  console.log({ birth });
+  const life = new Life(birth);
   res.setHeader('Content-Type', 'image/svg+xml');
   res.writeHead(200, 'ok');
-  res.write(svgStr, 'binary');
+  res.write(life.svg, 'binary');
   res.end();
 });
 
